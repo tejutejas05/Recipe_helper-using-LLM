@@ -1,0 +1,28 @@
+import requests
+from bs4 import BeautifulSoup
+
+def search_recipe(dish_name):
+
+    query = dish_name.replace(" ", "+")
+    url = f"https://www.allrecipes.com/search?q={query}"
+
+    headers = {
+        "User-Agent": "Mozilla/5.0"
+    }
+
+    response = requests.get(url, headers=headers)
+
+    print("STATUS:", response.status_code)   # DEBUG
+    print(response.text[:1000])               # DEBUG
+
+    soup = BeautifulSoup(response.text, "html.parser")
+
+    links = soup.find_all("a", href=True)
+
+    for link in links:
+        href = link["href"]
+
+        if "/recipe/" in href:
+            return href
+
+    return None
