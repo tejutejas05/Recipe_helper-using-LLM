@@ -4,25 +4,26 @@ from bs4 import BeautifulSoup
 
 def search_recipe(dish_name):
 
-    query = dish_name.replace(" ", "+")
-    url = f"https://www.allrecipes.com/search?q={query}"
+    query = f"site:allrecipes.com {dish_name}"
+    url = f"https://www.google.com/search?q={query}"
 
     headers = {
         "User-Agent": "Mozilla/5.0"
     }
 
-    response = requests.get(url, headers=headers)
+    res = requests.get(url, headers=headers)
 
-    soup = BeautifulSoup(response.text, "html.parser")
+    soup = BeautifulSoup(res.text, "html.parser")
 
-    # Find all links
-    links = soup.find_all("a", href=True)
+    for link in soup.find_all("a"):
 
-    for link in links:
-        href = link["href"]
+        href = link.get("href")
 
-        if "/recipe/" in href:
-            return href
+        if href and "allrecipes.com/recipe" in href:
+
+            start = href.find("https://")
+            end = href.find("&")
+
+            return href[start:end]
 
     return None
-
