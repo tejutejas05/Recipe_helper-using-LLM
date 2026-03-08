@@ -1,4 +1,4 @@
-from app.search import search_recipe
+from app.search_recipe import search_recipe
 
 dish = "chicken biryani"
 
