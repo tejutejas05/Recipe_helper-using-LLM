@@ -12,8 +12,8 @@ def search_recipe(dish_name):
 
     response = requests.get(url, headers=headers)
 
-    print("STATUS:", response.status_code)   # DEBUG
-    print(response.text[:1000])               # DEBUG
+    print("STATUS:", response.status_code)   
+    print(response.text[:1000])               
 
     soup = BeautifulSoup(response.text, "html.parser")
 
